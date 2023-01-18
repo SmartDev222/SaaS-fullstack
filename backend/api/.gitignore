@@ -1,7 +1,10 @@
 node_modules/
 build/
 
-.env
+.env.local
 
 uploads/*
 !uploads/.gitkeep
+
+public/images/user/*
+!public/images/user/default.jpg

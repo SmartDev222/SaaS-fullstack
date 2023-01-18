@@ -1,6 +1,7 @@
 version: '3'
 
 services:
+  # Backend / Database
   database:
     image: database
     build: ../backend/database
@@ -10,11 +11,12 @@ services:
     networks:
       - back
 
+  # Backend / API
   api:
     image: api
     build: ../backend/api
     volumes:
-      - ../backend/api/public:/app/public
+      - ../backend/api/public:/user/src/app/public
     restart: always
     depends_on:
       - database
@@ -22,14 +24,15 @@ services:
       - front
       - back
 
+  # Backend / Proxy
   proxy:
     image: nginx
     volumes:
       - ../backend/proxy/nginx.conf:/etc/nginx/conf.d/proxy.conf
     restart: always
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"
+      - "443:443"
     depends_on:
       - database
       - api
@@ -37,6 +40,7 @@ services:
       - front
       - docker-network
 
+  # Frontend / App / Web
   web:
     image: web
     build: ../frontend/app/web
@@ -46,6 +50,7 @@ services:
     networks:
       - front
 
+  # Frontend / Landing
   landing:
     image: landing
     build: ../frontend/landing
